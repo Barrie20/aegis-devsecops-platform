@@ -1,7 +1,7 @@
 # 🛡️ Aegis DevSecOps Platform
 
-[![CI Pipeline](https://github.com/YOUR_USERNAME/aegis-devsecops-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/aegis-devsecops-platform/actions/workflows/ci.yml)
-[![Security Scan](https://github.com/YOUR_USERNAME/aegis-devsecops-platform/actions/workflows/security.yml/badge.svg)](https://github.com/YOUR_USERNAME/aegis-devsecops-platform/actions/workflows/security.yml)
+[![CI Pipeline](https://github.com/Barrie20/aegis-devsecops-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Barrie20/aegis-devsecops-platform/actions/workflows/ci.yml)
+[![Security Scan](https://github.com/Barrie20/aegis-devsecops-platform/actions/workflows/security.yml/badge.svg)](https://github.com/Barrie20/aegis-devsecops-platform/actions/workflows/security.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > A production-grade DevSecOps platform demonstrating enterprise security practices, infrastructure automation, and cloud-native architecture.
@@ -97,7 +97,7 @@ Aegis is a comprehensive DevSecOps platform that implements:
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/aegis-devsecops-platform.git
+git clone https://github.com/Barrie20/aegis-devsecops-platform.git
 cd aegis-devsecops-platform
 
 # Run the setup script
