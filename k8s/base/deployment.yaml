@@ -1,0 +1,86 @@
+# ============================================
+# Kubernetes Deployment
+# ============================================
+# A Deployment tells Kubernetes:
+# - WHAT container to run
+# - HOW MANY replicas (copies) to maintain
+# - HOW to update (rolling update strategy)
+# - WHAT resources it needs (CPU, memory)
+# ============================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis-api
+  namespace: aegis
+  labels:
+    app.kubernetes.io/name: aegis-api
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: aegis-platform
+spec:
+  replicas: 2  # Run 2 copies for high availability
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: aegis-api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1        # Allow 1 extra pod during update
+      maxUnavailable: 0  # Never have 0 pods available
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: aegis-api
+        app.kubernetes.io/component: api
+    spec:
+      # Security: Don't run as root
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+
+      containers:
+        - name: aegis-api
+          image: aegis-api:latest  # Overridden per environment
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+
+          # Resource limits prevent one pod from consuming all cluster resources
+          resources:
+            requests:
+              cpu: "100m"      # 0.1 CPU cores (minimum guaranteed)
+              memory: "128Mi"  # 128 MB RAM (minimum guaranteed)
+            limits:
+              cpu: "500m"      # 0.5 CPU cores (maximum allowed)
+              memory: "512Mi"  # 512 MB RAM (maximum allowed)
+
+          # Liveness probe: "Is the container alive?"
+          # If this fails, Kubernetes RESTARTS the container
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          # Readiness probe: "Can it handle traffic?"
+          # If this fails, Kubernetes STOPS sending traffic
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          # Container security context
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL

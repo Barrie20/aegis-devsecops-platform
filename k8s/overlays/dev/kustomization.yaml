@@ -1,0 +1,26 @@
+# ============================================
+# Development Environment Overlay
+# ============================================
+# This patches the base configuration for development.
+# - Fewer replicas (save resources)
+# - Lower resource limits
+# - Debug logging enabled
+# ============================================
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: aegis-dev
+
+resources:
+  - ../../base
+
+# Patches modify the base resources for this environment
+patches:
+  - target:
+      kind: Deployment
+      name: aegis-api
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 1

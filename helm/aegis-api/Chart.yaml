@@ -1,0 +1,30 @@
+# ============================================
+# Helm Chart - Aegis API
+# ============================================
+# Helm is a package manager for Kubernetes.
+# A "chart" is a package of Kubernetes manifests
+# with configurable values.
+#
+# WHY HELM?
+# - Templating (one chart, many environments)
+# - Versioning (rollback to previous versions)
+# - Dependency management
+# - Standard way to distribute K8s applications
+# - Used by ArgoCD for GitOps deployments
+# ============================================
+
+apiVersion: v2
+name: aegis-api
+description: Helm chart for the Aegis DevSecOps Platform API
+type: application
+version: 0.1.0        # Chart version (changes when chart is modified)
+appVersion: "1.0.0"   # Application version (changes when app is modified)
+
+maintainers:
+  - name: DevOps Team
+    email: devops@example.com
+
+keywords:
+  - api
+  - fastapi
+  - devsecops

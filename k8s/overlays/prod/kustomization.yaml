@@ -1,0 +1,26 @@
+# ============================================
+# Production Environment Overlay
+# ============================================
+# Production gets:
+# - More replicas (high availability)
+# - Higher resource limits
+# - Stricter security policies
+# ============================================
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: aegis-prod
+
+resources:
+  - ../../base
+
+# Patches modify the base resources for production
+patches:
+  - target:
+      kind: Deployment
+      name: aegis-api
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 3

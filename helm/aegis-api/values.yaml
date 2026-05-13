@@ -1,0 +1,43 @@
+# ============================================
+# Helm Values - Default Configuration
+# ============================================
+# These are the DEFAULT values for the chart.
+# Override them per environment:
+#   helm install aegis ./helm/aegis-api -f values-prod.yaml
+# ============================================
+
+replicaCount: 2
+
+image:
+  repository: aegis-api
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+# Health check configuration
+healthCheck:
+  liveness:
+    path: /health/live
+    initialDelaySeconds: 10
+    periodSeconds: 30
+  readiness:
+    path: /health/ready
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+# Environment variables
+env:
+  ENVIRONMENT: "production"
+  LOG_LEVEL: "info"

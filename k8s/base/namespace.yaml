@@ -1,0 +1,8 @@
+# Namespace isolates resources (like folders for Kubernetes)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aegis
+  labels:
+    app.kubernetes.io/name: aegis
+    app.kubernetes.io/part-of: aegis-platform

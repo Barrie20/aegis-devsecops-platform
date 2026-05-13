@@ -1,0 +1,23 @@
+# ============================================
+# Kustomize Base Configuration
+# ============================================
+# Kustomize is a Kubernetes-native way to manage manifests.
+# 
+# PATTERN: Base + Overlays
+# - base/     → Common configuration (shared across all environments)
+# - overlays/ → Environment-specific patches (dev, staging, prod)
+#
+# WHY KUSTOMIZE over raw YAML?
+# - No duplication (DRY principle)
+# - Environment-specific configs without templating
+# - Built into kubectl (no extra tools needed)
+# - Easier to review changes in PRs
+# ============================================
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml

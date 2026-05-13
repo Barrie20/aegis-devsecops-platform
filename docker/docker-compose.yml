@@ -1,0 +1,79 @@
+# ============================================
+# Docker Compose - Local Development
+# ============================================
+# WHY DOCKER COMPOSE?
+# - Runs multiple services together (API + DB + monitoring)
+# - Simulates production environment locally
+# - One command to start everything: docker-compose up
+# - Consistent environment across all developers
+#
+# USAGE:
+#   docker-compose up -d        # Start all services (background)
+#   docker-compose logs -f api  # Follow API logs
+#   docker-compose down         # Stop and remove containers
+#   docker-compose down -v      # Stop and remove volumes (data)
+# ============================================
+
+version: "3.9"
+
+services:
+  # ---------- API Service ----------
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: aegis-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://aegis:localdev@db:5432/aegis_db
+      - ENVIRONMENT=development
+      - LOG_LEVEL=debug
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - aegis-network
+    restart: unless-stopped
+
+  # ---------- Database ----------
+  db:
+    image: postgres:16-alpine
+    container_name: aegis-db
+    environment:
+      POSTGRES_USER: aegis
+      POSTGRES_PASSWORD: localdev  # Only for local dev!
+      POSTGRES_DB: aegis_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aegis"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - aegis-network
+
+  # ---------- Redis (Cache) ----------
+  redis:
+    image: redis:7-alpine
+    container_name: aegis-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass localdev
+    networks:
+      - aegis-network
+
+# ---------- Volumes ----------
+# Named volumes persist data between container restarts
+volumes:
+  postgres_data:
+    driver: local
+
+# ---------- Networks ----------
+# Custom network for service-to-service communication
+networks:
+  aegis-network:
+    driver: bridge

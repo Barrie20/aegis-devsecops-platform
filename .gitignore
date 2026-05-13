@@ -1,0 +1,97 @@
+# ============================================
+# Aegis DevSecOps Platform - .gitignore
+# ============================================
+# This file tells Git which files to IGNORE
+# (never track, never commit, never push)
+#
+# WHY THIS MATTERS IN PRODUCTION:
+# - Prevents secrets from leaking to GitHub
+# - Keeps repo clean from build artifacts
+# - Reduces repo size (no node_modules, venvs)
+# - Prevents environment-specific files from causing conflicts
+# ============================================
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# ---------- Terraform ----------
+# State files contain sensitive infrastructure details
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.tfvars
+!*.tfvars.example
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# ---------- Docker ----------
+# Docker Compose override (local dev customizations)
+docker-compose.override.yml
+
+# ---------- Kubernetes ----------
+# Kubeconfig may contain cluster credentials
+kubeconfig
+*.kubeconfig
+
+# ---------- Environment & Secrets ----------
+# CRITICAL: Never commit secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+secrets/
+credentials/
+
+# ---------- IDE & Editor ----------
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ---------- OS ----------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# ---------- Logs ----------
+*.log
+logs/
+
+# ---------- Dependencies ----------
+node_modules/
+vendor/
+
+# ---------- Build Artifacts ----------
+*.zip
+*.tar.gz
+*.tgz

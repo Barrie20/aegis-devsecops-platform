@@ -1,0 +1,43 @@
+# ============================================
+# Trivy Security Scanner Configuration
+# ============================================
+# Trivy scans for:
+# - Vulnerabilities in OS packages and libraries
+# - Misconfigurations in IaC (Terraform, K8s, Docker)
+# - Exposed secrets in code
+#
+# WHY TRIVY?
+# - Open source (free)
+# - Fast (uses local vulnerability database)
+# - Comprehensive (code + containers + IaC)
+# - Easy CI/CD integration
+# - Used widely in enterprise DevSecOps
+# ============================================
+
+# Severity levels to report
+severity:
+  - CRITICAL
+  - HIGH
+
+# What to scan
+scan:
+  # Vulnerability scanning
+  vulnerability:
+    type:
+      - os        # OS package vulnerabilities
+      - library   # Application library vulnerabilities
+
+  # Misconfiguration scanning
+  misconfiguration:
+    enabled: true
+
+  # Secret scanning
+  secret:
+    enabled: true
+
+# Files/directories to skip
+skip-dirs:
+  - node_modules
+  - .git
+  - venv
+  - .venv

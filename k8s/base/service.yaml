@@ -1,0 +1,27 @@
+# ============================================
+# Kubernetes Service
+# ============================================
+# A Service provides a stable network endpoint for pods.
+# Pods come and go (scaling, updates, crashes), but the
+# Service IP/DNS name stays the same.
+#
+# Think of it like a load balancer inside the cluster.
+# ============================================
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: aegis-api
+  namespace: aegis
+  labels:
+    app.kubernetes.io/name: aegis-api
+    app.kubernetes.io/component: api
+spec:
+  type: ClusterIP  # Internal only (use Ingress for external access)
+  ports:
+    - port: 80          # Port the Service listens on
+      targetPort: 8000  # Port the container listens on
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: aegis-api  # Route to pods with this label

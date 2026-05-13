@@ -1,0 +1,32 @@
+# ============================================
+# Prometheus Configuration
+# ============================================
+# Prometheus scrapes (collects) metrics from your services.
+# It stores them as time-series data for querying and alerting.
+#
+# WHY PROMETHEUS?
+# - Industry standard for Kubernetes monitoring
+# - Pull-based model (Prometheus fetches metrics from your app)
+# - Powerful query language (PromQL)
+# - Integrates with Grafana for dashboards
+# - Used by every major tech company
+# ============================================
+
+global:
+  scrape_interval: 15s      # How often to collect metrics
+  evaluation_interval: 15s  # How often to evaluate alert rules
+  scrape_timeout: 10s       # Timeout for each scrape
+
+# Scrape configurations
+scrape_configs:
+  # Monitor Prometheus itself
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Monitor the Aegis API
+  - job_name: "aegis-api"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: ["aegis-api:8000"]
+    scrape_interval: 10s
